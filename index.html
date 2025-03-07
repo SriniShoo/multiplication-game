@@ -1145,6 +1145,136 @@
     .theme-dark-mode .font-title {
       color: #ecf0f1;
     }
+    
+    /* Add these styles for the hamburger menu */
+    .settings-menu-button {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      padding: 10px;
+    }
+
+    /* Hamburger icon lines */
+    .hamburger-line {
+      width: 25px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--button-gradient-1), var(--button-gradient-2));
+      margin: 3px 0;
+      border-radius: 3px;
+      transition: all 0.4s ease;
+      transform-origin: center;
+    }
+
+    /* Animation for hamburger icon when open */
+    .settings-menu-button.open .hamburger-line:nth-child(1) {
+      transform: translateY(9px) rotate(45deg);
+    }
+
+    .settings-menu-button.open .hamburger-line:nth-child(2) {
+      opacity: 0;
+      transform: scale(0);
+    }
+
+    .settings-menu-button.open .hamburger-line:nth-child(3) {
+      transform: translateY(-9px) rotate(-45deg);
+    }
+
+    /* Add bounce animation to hamburger button */
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+      40% {transform: translateY(-5px);}
+      60% {transform: translateY(-2px);}
+    }
+
+    .settings-menu-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      animation: bounce 0.7s ease;
+    }
+
+    /* Theme-specific styling for the hamburger menu */
+    .theme-dark-mode .settings-menu-button {
+      background: rgba(52, 73, 94, 0.9);
+    }
+
+    .theme-dark-mode .hamburger-line {
+      background: linear-gradient(90deg, var(--title-gradient-1), var(--title-gradient-4));
+    }
+
+    .settings-menu {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 250px;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+      z-index: 999;
+      padding: 70px 20px 20px;
+      transition: right 0.3s ease;
+      overflow-y: auto;
+    }
+
+    .settings-menu.open {
+      right: 0;
+    }
+
+    .settings-menu .theme-selector,
+    .settings-menu .font-selector {
+      position: relative;
+      top: 0;
+      left: 0;
+      right: 0;
+      margin: 0 0 30px 0;
+      box-shadow: none;
+      background: transparent;
+    }
+
+    .settings-menu .theme-title,
+    .settings-menu .font-title {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 998;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+    }
+
+    .overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Theme dark mode adjustments for settings menu */
+    .theme-dark-mode .settings-menu {
+      background: rgba(52, 73, 94, 0.95);
+    }
+
+    .theme-dark-mode .settings-menu-button {
+      background: rgba(52, 73, 94, 0.9);
+      color: #ecf0f1;
+    }
   </style>
 </head>
 <body>
@@ -1171,6 +1301,21 @@
       <div class="font-option comic" data-font="'Comic Sans MS', cursive, sans-serif">Aa</div>
     </div>
   </div>
+
+  <!-- Hamburger menu button -->
+  <div class="settings-menu-button" id="settingsMenuButton">
+    <div class="hamburger-line"></div>
+    <div class="hamburger-line"></div>
+    <div class="hamburger-line"></div>
+  </div>
+  
+  <!-- Settings menu -->
+  <div class="settings-menu" id="settingsMenu">
+    <!-- Theme and font selectors will be moved here by JavaScript -->
+  </div>
+  
+  <!-- Overlay for closing the menu -->
+  <div class="overlay" id="overlay"></div>
 
   <div class="container">
     <div class="characters">
@@ -1611,6 +1756,9 @@
       // Show congrats screen
       congratsContainer.style.display = 'flex';
       
+      // Ensure the page scrolls to the top when showing congrats screen
+      window.scrollTo({top: 0, behavior: 'smooth'});
+      
       // Display player name
       playerNameDisplay.textContent = playerName;
       
@@ -1711,13 +1859,33 @@
         }, 500);
       }
       
-      // Scroll to ensure the Play Again button is visible
-      window.scrollTo(0, document.body.scrollHeight);
+      // Show the scroll down button after a delay
+      const scrollDownBtn = document.getElementById('scrollDownBtn');
+      setTimeout(() => {
+        scrollDownBtn.style.opacity = '1';
+      }, 2000);
       
       // Update certificate with player's info including the unique ID
       updateCertificate();
     }
     
+    // Add this right before the final script tag
+    
+    // Setup scroll down button functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const scrollDownBtn = document.getElementById('scrollDownBtn');
+      if (scrollDownBtn) {
+        scrollDownBtn.addEventListener('click', function() {
+          // Get certificate position
+          const certificateContainer = document.querySelector('.certificate-container');
+          if (certificateContainer) {
+            certificateContainer.scrollIntoView({behavior: 'smooth'});
+          }
+        });
+      }
+    });
+    
+    // Improve the confetti generation
     function createConfetti() {
       const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', 
                      '#ff8a00', '#e52e71', '#4a90e2', '#9013fe', '#27ae60', '#f39c12'];
@@ -1726,10 +1894,20 @@
       for (let i = 0; i < 150; i++) {
         const confetti = document.createElement('div');
         confetti.className = 'confetti';
+        
+        // Set a random direction variable for the swaying
+        const direction = Math.random() > 0.5 ? 1 : -1;
+        confetti.style.setProperty('--direction', direction);
+        
+        // More distributed starting positions
         confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.top = Math.random() * 10 - 20 + 'vh'; // Start above viewport
+        
         confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        // More randomized animation timing
         confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
-        confetti.style.animationDelay = Math.random() * 2 + 's';
+        confetti.style.animationDelay = Math.random() * 1.5 + 's';
         
         // Randomly sized confetti
         const size = Math.random() * 10 + 5;
@@ -2250,6 +2428,89 @@
         localStorage.setItem('preferredFont', selectedFont);
       });
     });
+    
+    // Hamburger menu functionality
+    const settingsMenuButton = document.getElementById('settingsMenuButton');
+    const settingsMenu = document.getElementById('settingsMenu');
+    const overlay = document.getElementById('overlay');
+    const themeSelector = document.querySelector('.theme-selector');
+    const fontSelector = document.querySelector('.font-selector');
+    
+    // Move the theme and font selectors into the settings menu
+    window.addEventListener('DOMContentLoaded', function() {
+      // Wait for existing DOMContentLoaded handlers to finish
+      setTimeout(() => {
+        // Move the theme and font selectors into the settings menu
+        settingsMenu.appendChild(themeSelector);
+        settingsMenu.appendChild(fontSelector);
+      }, 0);
+    });
+    
+    // Toggle menu when clicking the button
+    settingsMenuButton.addEventListener('click', function() {
+      this.classList.toggle('open');
+      settingsMenu.classList.toggle('open');
+      overlay.classList.toggle('open');
+      
+      // Add a playful effect for kids
+      if (this.classList.contains('open')) {
+        const emojis = ["🎮", "🎨", "🎯", "🎪", "🎭", "🎡"];
+        const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+        
+        // Create a flying emoji when opening the menu
+        const flyingEmoji = document.createElement('div');
+        flyingEmoji.textContent = emoji;
+        flyingEmoji.style.position = 'fixed';
+        flyingEmoji.style.top = '15px';
+        flyingEmoji.style.right = '15px';
+        flyingEmoji.style.fontSize = '24px';
+        flyingEmoji.style.zIndex = '990';
+        flyingEmoji.style.pointerEvents = 'none';
+        flyingEmoji.style.opacity = '0';
+        flyingEmoji.style.animation = 'flyMenuEmoji 1s forwards';
+        document.body.appendChild(flyingEmoji);
+        
+        // Remove after animation completes
+        setTimeout(() => {
+          flyingEmoji.remove();
+        }, 1000);
+      }
+    });
+    
+    // Close menu when clicking outside
+    overlay.addEventListener('click', function() {
+      settingsMenuButton.classList.remove('open');
+      settingsMenu.classList.remove('open');
+      overlay.classList.remove('open');
+    });
+    
+    // Close menu when tapping the escape key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        settingsMenuButton.classList.remove('open');
+        settingsMenu.classList.remove('open');
+        overlay.classList.remove('open');
+      }
+    });
+    
+    // Add this new keyframe animation
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = `
+      @keyframes flyMenuEmoji {
+        0% { 
+          transform: translate(0, 0) scale(0.5); 
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        100% { 
+          transform: translate(-50px, -20px) scale(1.5) rotate(360deg);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(styleSheet);
   </script>
 </body>
 </html>
