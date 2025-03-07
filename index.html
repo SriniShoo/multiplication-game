@@ -1,0 +1,2255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Multiplication Quiz for Kids</title>
+  <!-- Add Google Fonts - simpler, more readable options -->
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Sans+MS&family=Nunito:wght@400;700&family=Quicksand:wght@400;700&family=Lato:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Add html2canvas library only -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    :root {
+      --main-font: 'Nunito', sans-serif;
+      --title-font: 'Quicksand', sans-serif;
+      
+      /* Theme variables */
+      --bg-gradient-1: #a1c4fd;
+      --bg-gradient-2: #c2e9fb;
+      --bg-gradient-3: #ffecd2;
+      --primary-color: #4a90e2;
+      --secondary-color: #9013fe;
+      --accent-color: #ffc107;
+      --text-color: #34495e;
+      --title-gradient-1: #ff8a00;
+      --title-gradient-2: #e52e71;
+      --title-gradient-3: #4a90e2;
+      --title-gradient-4: #9013fe;
+      --border-gradient-1: #ff0066;
+      --border-gradient-2: #ffcc00;
+      --border-gradient-3: #00ccff;
+      --border-gradient-4: #cc00ff;
+      --button-gradient-1: #4a90e2;
+      --button-gradient-2: #9013fe;
+      --correct-color: #27ae60;
+      --incorrect-color: #e74c3c;
+    }
+    
+    body {
+      background: linear-gradient(135deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3));
+      background-size: 600% 600%;
+      animation: gradientBG 15s ease infinite;
+      font-family: var(--main-font);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-y: auto;
+    }
+    
+    h1, h2, h3, .welcome-title, .congrats-title {
+      font-family: var(--title-font);
+    }
+    
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .container {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border: 5px solid #ffc107;
+      margin: 20px 0;
+    }
+    
+    .container::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      z-index: -1;
+      background: linear-gradient(45deg, var(--border-gradient-1), var(--border-gradient-2), var(--border-gradient-3), var(--border-gradient-4));
+      background-size: 400% 400%;
+      animation: border-animation 8s ease infinite;
+      filter: blur(10px);
+      border-radius: 25px;
+    }
+    
+    @keyframes border-animation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    /* Animated characters */
+    .characters {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .character {
+      position: absolute;
+      font-size: 2rem;
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(5deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+    
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, var(--title-gradient-1), var(--title-gradient-2), var(--title-gradient-3), var(--title-gradient-4));
+      background-size: 300% 300%;
+      animation: gradient-text 5s ease infinite;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transition: transform 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+    }
+    
+    @keyframes gradient-text {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    h1:hover {
+      transform: scale(1.05) translateY(-2px);
+      text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .question-number {
+      font-size: 1.2rem;
+      color: #666;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 30px;
+      padding: 5px 15px;
+      display: inline-block;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .question {
+      font-size: 2.5rem;
+      color: #34495e;
+      margin: 15px 0 25px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+      animation: questionPulse 2s infinite;
+    }
+    
+    @keyframes questionPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+    
+    input[type="number"] {
+      font-size: 1.5rem;
+      padding: 12px;
+      border: 3px solid #4a90e2;
+      border-radius: 15px;
+      width: 180px;
+      text-align: center;
+      margin-bottom: 25px;
+      background: #f8f9fa;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s;
+      /* Remove spinner arrows in Firefox */
+      -moz-appearance: textfield;
+    }
+    
+    input[type="number"]:focus {
+      transform: scale(1.05);
+      border-color: #9013fe;
+      box-shadow: 0 0 15px rgba(144, 19, 254, 0.3);
+      outline: none;
+    }
+    
+    /* Remove spinner arrows in Chrome, Safari, Edge, Opera */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button { 
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    
+    button {
+      background: linear-gradient(90deg, var(--button-gradient-1), var(--button-gradient-2));
+      border: none;
+      padding: 12px 25px;
+      font-size: 1.4rem;
+      color: #fff;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      margin: 10px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    
+    button:hover {
+      transform: scale(1.05) translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(90deg, var(--button-gradient-1), var(--button-gradient-2));
+      opacity: 0.9;
+    }
+    
+    button:active {
+      transform: scale(0.98) translateY(1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .feedback {
+      font-size: 1.5rem;
+      margin: 20px 0;
+      height: 40px;
+      transition: all 0.5s;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    
+    .score {
+      font-size: 1.8rem;
+      color: #2b2454;
+      margin-top: 25px;
+      font-weight: bold;
+      background: linear-gradient(90deg, #9013fe, #4a90e2);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      padding: 10px;
+      border-radius: 15px;
+      display: inline-block;
+    }
+    
+    /* Animations for correct/incorrect answers */
+    @keyframes celebrate {
+      0% { transform: scale(1); }
+      25% { transform: scale(1.2) rotate(-5deg); }
+      50% { transform: scale(1.2) rotate(5deg); }
+      75% { transform: scale(1.1) rotate(-3deg); }
+      100% { transform: scale(1); }
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-10px); }
+      40%, 80% { transform: translateX(10px); }
+    }
+    
+    .correct {
+      animation: celebrate 0.8s ease;
+      color: var(--correct-color);
+      background-color: rgba(46, 204, 113, 0.2);
+      box-shadow: 0 0 15px rgba(46, 204, 113, 0.5);
+      font-weight: bold;
+    }
+    
+    .incorrect {
+      animation: shake 0.5s ease;
+      color: var(--incorrect-color);
+      background-color: rgba(231, 76, 60, 0.1);
+      font-weight: bold;
+    }
+    
+    /* Congratulations screen styles */
+    .congrats-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      animation: popIn 1s ease-out forwards;
+      width: 100%;
+    }
+    
+    .congrats-title {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, #ff8a00, #e52e71, #4a90e2, #9013fe);
+      background-size: 300% 300%;
+      animation: gradient-text 5s ease infinite;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .player-name {
+      font-size: 2.5rem;
+      color: #34495e;
+      margin: 10px 0 20px;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+      animation: nameGlow 3s infinite;
+    }
+    
+    @keyframes nameGlow {
+      0%, 100% { text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
+      50% { text-shadow: 0 0 15px rgba(74, 144, 226, 0.7), 0 0 5px rgba(74, 144, 226, 0.4); }
+    }
+    
+    .congrats-message {
+      font-size: 1.8rem;
+      margin-bottom: 30px;
+      color: #34495e;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 15px;
+      animation: messageFloat 3s ease-in-out infinite;
+    }
+    
+    @keyframes messageFloat {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+    
+    .final-score {
+      font-size: 2.5rem;
+      color: #2b2454;
+      margin: 20px 0;
+      font-weight: bold;
+      padding: 15px 30px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,255,255,0.5));
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      animation: scoreGlow 2s infinite;
+    }
+    
+    @keyframes scoreGlow {
+      0% { box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+      50% { box-shadow: 0 5px 30px rgba(74, 144, 226, 0.5); }
+      100% { box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+    }
+    
+    .trophy-container {
+      margin: 20px 0;
+      position: relative;
+    }
+    
+    .trophy {
+      font-size: 8rem;
+      filter: drop-shadow(0 0 20px gold);
+      animation: trophyWiggle 3s infinite;
+      display: inline-block;
+    }
+    
+    .medal-gold {
+      font-size: 8rem;
+      filter: drop-shadow(0 0 20px gold);
+      animation: trophyWiggle 3s infinite;
+      color: gold;
+    }
+    
+    .medal-silver {
+      font-size: 8rem;
+      filter: drop-shadow(0 0 20px silver);
+      animation: trophyWiggle 3s infinite;
+      color: silver;
+    }
+    
+    .medal-bronze {
+      font-size: 8rem;
+      filter: drop-shadow(0 0 20px #cd7f32);
+      animation: trophyWiggle 3s infinite;
+      color: #cd7f32;
+    }
+    
+    .crown {
+      position: absolute;
+      font-size: 4rem;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: crownFloat 2s ease-in-out infinite;
+    }
+    
+    @keyframes crownFloat {
+      0%, 100% { transform: translateX(-50%) translateY(0) rotate(-3deg); }
+      50% { transform: translateX(-50%) translateY(-10px) rotate(3deg); }
+    }
+    
+    .stars-container {
+      margin: 15px 0;
+    }
+    
+    .star-gold {
+      display: inline-block;
+      font-size: 3rem;
+      color: gold;
+      margin: 0 10px;
+      filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.7));
+    }
+    
+    .star-silver {
+      display: inline-block;
+      font-size: 3rem;
+      color: silver;
+      margin: 0 10px;
+      filter: drop-shadow(0 0 10px rgba(192, 192, 192, 0.7));
+    }
+    
+    .ribbon {
+      display: inline-block;
+      font-size: 5rem;
+      margin: 0 10px;
+      animation: ribbonSway 3s ease-in-out infinite;
+    }
+    
+    @keyframes ribbonSway {
+      0%, 100% { transform: rotate(-5deg); }
+      50% { transform: rotate(5deg); }
+    }
+    
+    .play-again-btn {
+      background: linear-gradient(90deg, #ff8a00, #e52e71);
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.5rem;
+      color: #fff;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      margin-top: 30px;
+      box-shadow: 0 10px 20px rgba(229, 46, 113, 0.3);
+      animation: buttonPulse 2s infinite;
+    }
+    
+    @keyframes buttonPulse {
+      0% { transform: scale(1); box-shadow: 0 10px 20px rgba(229, 46, 113, 0.3); }
+      50% { transform: scale(1.05); box-shadow: 0 15px 30px rgba(229, 46, 113, 0.5); }
+      100% { transform: scale(1); box-shadow: 0 10px 20px rgba(229, 46, 113, 0.3); }
+    }
+    
+    .play-again-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 15px 30px rgba(229, 46, 113, 0.5);
+    }
+    
+    .confetti {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background-color: #f00;
+      animation: confetti-fall 5s linear forwards;
+      border-radius: 2px;
+    }
+    
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      70% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    
+    @keyframes trophyWiggle {
+      0%, 100% { transform: rotate(-5deg); }
+      50% { transform: rotate(5deg); }
+    }
+    
+    @keyframes confetti-fall {
+      0% { 
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+      }
+      100% { 
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+    
+    /* Flying emojis for correct answers */
+    .emoji {
+      position: absolute;
+      font-size: 2rem;
+      pointer-events: none;
+      animation: flyEmoji 2s forwards;
+      opacity: 0;
+    }
+    
+    @keyframes flyEmoji {
+      0% { 
+        transform: translate(0, 0) scale(0.5); 
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      100% { 
+        transform: translate(var(--x), var(--y)) scale(1.5) rotate(var(--r));
+        opacity: 0;
+      }
+    }
+    
+    /* Name input screen styles */
+    .name-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .welcome-title {
+      font-size: 2.8rem;
+      margin-bottom: 30px;
+      background: linear-gradient(90deg, #ff8a00, #e52e71, #4a90e2, #9013fe);
+      background-size: 300% 300%;
+      animation: gradient-text 5s ease infinite;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .name-input {
+      font-size: 1.5rem;
+      padding: 12px 20px;
+      border: 3px solid #4a90e2;
+      border-radius: 15px;
+      width: 80%;
+      max-width: 300px;
+      text-align: center;
+      margin-bottom: 25px;
+      background: #f8f9fa;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s;
+    }
+    
+    .name-input:focus {
+      transform: scale(1.05);
+      border-color: #9013fe;
+      box-shadow: 0 0 15px rgba(144, 19, 254, 0.3);
+      outline: none;
+    }
+    
+    .start-btn {
+      background: linear-gradient(90deg, #ff8a00, #e52e71);
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.5rem;
+      color: #fff;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 10px 20px rgba(229, 46, 113, 0.3);
+      animation: buttonPulse 2s infinite;
+    }
+    
+    .button-container {
+      width: 100%;
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+    }
+    
+    /* Theme selector styles */
+    .theme-selector {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .theme-title {
+      font-size: 0.8rem;
+      margin-bottom: 8px;
+      color: var(--text-color);
+      font-weight: bold;
+    }
+    
+    .theme-options {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .theme-option {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      border: 2px solid transparent;
+    }
+    
+    .theme-option:hover {
+      transform: scale(1.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    
+    .theme-option.active {
+      border-color: #333;
+      transform: scale(1.1);
+    }
+    
+    /* Theme color previews */
+    .theme-blue-purple {
+      background: linear-gradient(45deg, #4a90e2 0%, #9013fe 100%);
+    }
+    
+    .theme-green-yellow {
+      background: linear-gradient(45deg, #2ecc71 0%, #f1c40f 100%);
+    }
+    
+    .theme-pink-orange {
+      background: linear-gradient(45deg, #e91e63 0%, #ff9800 100%);
+    }
+    
+    .theme-teal-blue {
+      background: linear-gradient(45deg, #00bcd4 0%, #3498db 100%);
+    }
+    
+    .theme-dark {
+      background: linear-gradient(45deg, #2c3e50 0%, #34495e 100%);
+    }
+    
+    /* Font selector styles - updated for simplicity */
+    .font-selector {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .font-title {
+      font-size: 0.8rem;
+      margin-bottom: 8px;
+      color: var(--text-color);
+      font-weight: bold;
+    }
+    
+    .font-options {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+    }
+    
+    .font-option {
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.2s;
+      border: 2px solid transparent;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .font-option:hover {
+      background: rgba(74, 144, 226, 0.1);
+    }
+    
+    .font-option.active {
+      border-color: var(--primary-color);
+      background: rgba(74, 144, 226, 0.2);
+    }
+    
+    .nunito {
+      font-family: 'Nunito', sans-serif;
+    }
+    
+    .quicksand {
+      font-family: 'Quicksand', sans-serif;
+    }
+    
+    .lato {
+      font-family: 'Lato', sans-serif;
+    }
+    
+    .opensans {
+      font-family: 'Open Sans', sans-serif;
+    }
+    
+    .comic {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+    
+    /* Certificate styles - COMPLETE REDESIGN to fix overlapping */
+    .certificate {
+      width: 90%;
+      max-width: 450px;
+      height: 600px;
+      background-color: #fffde7;
+      border: 10px solid #ffd700;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+      margin: 0 auto;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    .certificate-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #fffde7;
+      z-index: 0;
+    }
+    
+    /* Add certificate background stars as individual elements */
+    .certificate-star {
+      position: absolute;
+      font-size: 30px;
+      color: rgba(255, 215, 0, 0.1);
+      z-index: 0;
+    }
+    
+    /* New certificate design with absolute positioning */
+    .certificate-logo {
+      position: absolute;
+      top: 20px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 3.5rem;
+      z-index: 2;
+    }
+    
+    .certificate-title {
+      position: absolute;
+      top: 80px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 2rem;
+      color: #b71c1c;
+      font-weight: bold;
+      z-index: 2;
+    }
+    
+    .certificate-text-1 {
+      position: absolute;
+      top: 150px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 1.2rem;
+      z-index: 2;
+    }
+    
+    .certificate-name {
+      position: absolute;
+      top: 190px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #1a237e;
+      border-bottom: 2px dashed #ffd700;
+      display: inline-block;
+      width: 70%;
+      margin: 0 auto;
+      padding-bottom: 5px;
+      z-index: 2;
+    }
+    
+    .certificate-text-2 {
+      position: absolute;
+      top: 250px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 1.2rem;
+      z-index: 2;
+    }
+    
+    .certificate-text-3 {
+      position: absolute;
+      top: 280px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      z-index: 2;
+    }
+    
+    .certificate-score {
+      position: absolute;
+      top: 330px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #2e7d32;
+      z-index: 2;
+    }
+    
+    .certificate-date {
+      position: absolute;
+      top: 380px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 1rem;
+      color: #616161;
+      z-index: 2;
+    }
+    
+    .certificate-id {
+      position: absolute;
+      bottom: 30px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #616161;
+      font-family: monospace;
+      background: rgba(255, 255, 255, 0.6);
+      padding: 4px;
+      width: 80%;
+      margin: 0 auto;
+      border-radius: 4px;
+      z-index: 2;
+    }
+    
+    .certificate-seal {
+      position: absolute;
+      bottom: 60px;
+      right: 30px;
+      width: 70px;
+      height: 70px;
+      background: #ffd700;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      color: #b71c1c;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      z-index: 3;
+    }
+    
+    .certificate-ribbon {
+      position: absolute;
+      top: 0;
+      left: 20px;
+      width: 40px;
+      height: 70px;
+      background: #b71c1c;
+      z-index: 1;
+    }
+    
+    .certificate-ribbon::after {
+      content: "";
+      position: absolute;
+      bottom: -20px;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-top: 20px solid #b71c1c;
+    }
+    
+    /* Update certificate button text */
+    .download-btn {
+      margin-top: 15px;
+      background: linear-gradient(90deg, #4CAF50, #8BC34A);
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .download-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    }
+    
+    .download-btn:active {
+      transform: translateY(1px);
+    }
+    
+    .download-icon {
+      margin-right: 8px;
+      font-size: 1.4rem;
+    }
+    
+    /* Remove PDF specific styles and update with PNG styles */
+    .certificate-png {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+      width: 800px;
+      height: 600px;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    
+    /* Add this style to hide the temp certificate during generation */
+    #tempCertificate {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 800px;
+      height: 600px;
+      background: white;
+      z-index: -9999;
+      visibility: hidden;
+    }
+    
+    /* Add shake animation for empty input */
+    @keyframes shakeInput {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-5px); }
+      40%, 80% { transform: translateX(5px); }
+    }
+    
+    .shake-animation {
+      animation: shakeInput 0.5s ease;
+    }
+    
+    /* Style for disabled input - make it obvious but not jarring */
+    input:disabled {
+      background-color: #f0f0f0;
+      color: #888;
+      cursor: not-allowed;
+      opacity: 0.8;
+    }
+    
+    button:disabled {
+      background: linear-gradient(90deg, #b3b3b3, #d1d1d1);
+      cursor: not-allowed;
+      transform: none;
+      opacity: 0.7;
+    }
+    
+    /* Style for the name error message */
+    #nameErrorMsg {
+      animation: fadeInOut 2s ease;
+    }
+    
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateY(-10px); }
+      10% { opacity: 1; transform: translateY(0); }
+      90% { opacity: 1; }
+      100% { opacity: 0.8; }
+    }
+    
+    /* Style for certificate ID */
+    .certificate-id {
+      font-size: 0.8rem;
+      margin: 10px 0;
+      color: #616161;
+      font-family: monospace;
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.6);
+      padding: 4px 8px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+    
+    /* Mobile responsiveness improvements */
+    @media (max-width: 768px) {
+      .container {
+        width: 95%;
+        padding: 20px 15px;
+        margin: 10px 0;
+      }
+      
+      h1 {
+        font-size: 2.2rem;
+      }
+      
+      .question {
+        font-size: 2rem;
+        padding: 15px 10px;
+      }
+      
+      input[type="text"], input[type="number"] {
+        font-size: 1.3rem;
+        width: 80%;
+        max-width: 200px;
+      }
+      
+      button {
+        padding: 12px 20px;
+        font-size: 1.2rem;
+        width: auto;
+        min-width: 120px;
+      }
+      
+      .feedback {
+        font-size: 1.3rem;
+      }
+      
+      .certificate {
+        max-width: 90%;
+      }
+      
+      .font-selector, .theme-selector {
+        position: relative;
+        top: 0;
+        left: 0;
+        right: 0;
+        margin: 10px auto;
+        display: flex;
+        justify-content: center;
+        width: 90%;
+      }
+      
+      /* For small phones in portrait */
+      .flying-emoji {
+        font-size: 1.5rem;
+      }
+    }
+    
+    /* Even smaller devices */
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .question {
+        font-size: 1.6rem;
+      }
+      
+      .congrats-title {
+        font-size: 1.8rem;
+      }
+      
+      /* Optimize certificate for small screens */
+      .certificate-title {
+        font-size: 1.5rem;
+      }
+      
+      .certificate-name {
+        font-size: 1.3rem;
+      }
+      
+      .certificate-text {
+        font-size: 1rem;
+      }
+    }
+    
+    /* Handle orientation change */
+    @media (orientation: landscape) and (max-height: 500px) {
+      .container {
+        margin: 5px 0;
+        padding: 15px 10px;
+      }
+      
+      h1 {
+        margin-top: 5px;
+        margin-bottom: 10px;
+      }
+      
+      .question {
+        margin: 10px 0 15px;
+      }
+      
+      /* Make sure fonts aren't too large in landscape on small devices */
+      button {
+        padding: 8px 15px;
+        font-size: 1rem;
+        margin: 5px;
+      }
+      
+      /* Adjust certificate view for landscape */
+      .certificate-container {
+        transform: scale(0.8);
+        transform-origin: top center;
+        margin: -40px 0;
+      }
+    }
+    
+    /* Fix PNG generation for mobile */
+    #tempCertificate {
+      width: 800px !important;
+      height: 600px !important;
+    }
+    
+    /* Fix dark theme text visibility issue */
+    .theme-selector {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .theme-dark-mode .theme-selector {
+      background: rgba(52, 73, 94, 0.9);
+    }
+    
+    .theme-dark-mode .theme-title,
+    .theme-dark-mode .font-title {
+      color: #ecf0f1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Theme selector -->
+  <div class="theme-selector">
+    <div class="theme-title">Theme</div>
+    <div class="theme-options">
+      <div class="theme-option theme-blue-purple active" data-theme="blue-purple"></div>
+      <div class="theme-option theme-green-yellow" data-theme="green-yellow"></div>
+      <div class="theme-option theme-pink-orange" data-theme="pink-orange"></div>
+      <div class="theme-option theme-teal-blue" data-theme="teal-blue"></div>
+      <div class="theme-option theme-dark" data-theme="dark"></div>
+    </div>
+  </div>
+
+  <!-- Font selector - updated for simplicity -->
+  <div class="font-selector">
+    <div class="font-title">Font</div>
+    <div class="font-options">
+      <div class="font-option nunito active" data-font="'Nunito', sans-serif">Aa</div>
+      <div class="font-option quicksand" data-font="'Quicksand', sans-serif">Aa</div>
+      <div class="font-option lato" data-font="'Lato', sans-serif">Aa</div>
+      <div class="font-option opensans" data-font="'Open Sans', sans-serif">Aa</div>
+      <div class="font-option comic" data-font="'Comic Sans MS', cursive, sans-serif">Aa</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="characters">
+      <div class="character" style="top: 10%; left: 10%;">✏️</div>
+      <div class="character" style="top: 20%; right: 10%; animation-delay: 1s;">🔢</div>
+      <div class="character" style="bottom: 15%; left: 15%; animation-delay: 2s;">📝</div>
+      <div class="character" style="bottom: 25%; right: 15%; animation-delay: 3s;">🧮</div>
+    </div>
+    
+    <!-- Name Input Screen -->
+    <div class="name-container" id="nameContainer">
+      <h1 class="welcome-title">Multiplication Quiz</h1>
+      <p style="font-size: 1.5rem; margin-bottom: 20px;">👋 What's your name?</p>
+      <input type="text" class="name-input" id="nameInput" placeholder="Enter your name here" maxlength="20" autofocus>
+      <button class="start-btn" id="startBtn">Let's Start!</button>
+    </div>
+    
+    <!-- Quiz Screen -->
+    <div id="quizContainer" style="display: none;">
+      <h1>Multiplication Quiz</h1>
+      <div class="question" id="question">Question will appear here</div>
+      <input type="number" id="answerInput" placeholder="Your answer" />
+      <br>
+      <button id="submitBtn">Submit Answer</button>
+      <div class="feedback" id="feedback"></div>
+      <div class="score" id="score">Score: 0</div>
+    </div>
+    
+    <!-- Congratulations Screen -->
+    <div class="congrats-container" id="congratsContainer">
+      <div class="congrats-title">Congratulations!</div>
+      <div class="player-name" id="playerNameDisplay"></div>
+      <div class="trophy-container" id="trophyContainer">
+        <!-- Trophy content will be dynamically added here -->
+      </div>
+      <div class="congrats-message" id="congratsMessage">You've completed the quiz!</div>
+      <div class="final-score" id="finalScore"></div>
+      <div class="stars-container" id="starsContainer">
+        <!-- Stars content will be dynamically added here -->
+      </div>
+      
+      <!-- Certificate section -->
+      <div class="certificate-container">
+        <div class="certificate" id="certificate">
+          <div class="certificate-background"></div>
+          <div class="certificate-logo">🏅</div>
+          <div class="certificate-title">Certificate of Achievement</div>
+          <div class="certificate-text-1">This is to certify that</div>
+          <div class="certificate-name" id="certificateName">Student Name</div>
+          <div class="certificate-text-2">has successfully completed the</div>
+          <div class="certificate-text-3">Multiplication Math Quiz</div>
+          <div class="certificate-score" id="certificateScore">Score: 0/100</div>
+          <div class="certificate-date" id="certificateDate">Date: January 1, 2023</div>
+          <div class="certificate-id" id="certificateId">Certificate ID: MTH-20230101-AB12</div>
+          <div class="certificate-seal">🌟</div>
+          <div class="certificate-ribbon"></div>
+        </div>
+        <button class="download-btn" id="downloadBtn">
+          <span class="download-icon">📥</span> Download Certificate (PNG)
+        </button>
+      </div>
+      
+      <div class="button-container">
+        <button class="play-again-btn" id="playAgainBtn">Play Again!</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Add a temp div to hold our certificate during PDF generation -->
+  <div id="tempCertificate"></div>
+  
+  <script>
+    let currentQuestion = 1;
+    const totalQuestions = 10;
+    let score = 0;
+    let currentA = 0, currentB = 0;
+    let playerName = "";
+    
+    const nameContainer = document.getElementById('nameContainer');
+    const nameInput = document.getElementById('nameInput');
+    const startBtn = document.getElementById('startBtn');
+    const quizContainer = document.getElementById('quizContainer');
+    const questionEl = document.getElementById('question');
+    const answerInput = document.getElementById('answerInput');
+    const feedbackEl = document.getElementById('feedback');
+    const scoreEl = document.getElementById('score');
+    const submitBtn = document.getElementById('submitBtn');
+    const congratsContainer = document.getElementById('congratsContainer');
+    const congratsMessage = document.getElementById('congratsMessage');
+    const finalScore = document.getElementById('finalScore');
+    const playAgainBtn = document.getElementById('playAgainBtn');
+    const container = document.querySelector('.container');
+    const trophyContainer = document.getElementById('trophyContainer');
+    const starsContainer = document.getElementById('starsContainer');
+    const playerNameDisplay = document.getElementById('playerNameDisplay');
+    const certificateName = document.getElementById('certificateName');
+    const certificateScore = document.getElementById('certificateScore');
+    const certificateDate = document.getElementById('certificateDate');
+    const certificate = document.getElementById('certificate');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const fontOptions = document.querySelectorAll('.font-option');
+    
+    // Encouraging messages arrays
+    const positiveMessages = [
+      "Excellent work! 🎉", 
+      "You're on fire! 🔥", 
+      "Great job! 👏", 
+      "Well done! 🌟", 
+      "Keep it up! 💪",
+      "Amazing! You're so smart! 🧠",
+      "Wow! You got it right! 🤩",
+      "Super duper! 🦸‍♂️",
+      "You're a math wizard! ✨",
+      "Fantastic job! 🎊"
+    ];
+    const negativeMessages = [
+      "Oops, try again! 🙂", 
+      "Don't worry, keep trying! 💪", 
+      "Almost there, you can do it! 👍", 
+      "Nice effort! 🌻", 
+      "Keep going, you'll get it! 🚀",
+      "Good try! Let's learn together! 📚",
+      "Not quite, but you're learning! 🌈",
+      "It's okay, math takes practice! 🧩",
+      "You're still awesome! 🌟",
+      "Every mistake helps us learn! 🌱"
+    ];
+    
+    const emojis = ["🎉", "✨", "💯", "👍", "🙌", "👏", "🌟", "⭐", "🥳", "🤩"];
+    
+    function getRandomMessage(messages) {
+      return messages[Math.floor(Math.random() * messages.length)];
+    }
+    
+    // Add this variable to track if we're waiting for the next question
+    let isProcessingAnswer = false;
+    
+    // Empty input messages - funny, kid-friendly responses
+    const emptyInputMessages = [
+      "Hmm, I don't see any numbers here! 🧐",
+      "Oops! Did you forget to type your answer? 🙊",
+      "Hey there! The answer box is feeling empty! 📦",
+      "Knock knock! Any numbers home? 🏠",
+      "The number monsters are hungry! Feed them your answer! 👾",
+      "Your calculator is waiting... 🧮",
+      "Psst... this is where you type your answer! 👀",
+      "Houston, we have no numbers! 🚀",
+      "My pet dragon eats numbers... and he's hungry! 🐉",
+      "Uh oh! I think your answer is playing hide and seek! 🙈"
+    ];
+    
+    function getRandomEmptyMessage() {
+      return emptyInputMessages[Math.floor(Math.random() * emptyInputMessages.length)];
+    }
+    
+    // First fix: Improve focus handling for answer input
+    function generateQuestion() {
+      currentA = Math.floor(Math.random() * 20) + 1;
+      currentB = Math.floor(Math.random() * 20) + 1;
+      
+      // Update question format to separate question number from the multiplication problem
+      questionEl.innerHTML = `
+        <div class="question-number">Question ${currentQuestion} of ${totalQuestions}</div>
+        ${currentA} × ${currentB} = ?
+      `;
+      
+      // Clear and focus the input field
+      answerInput.value = '';
+      
+      // Clear feedback
+      feedbackEl.textContent = '';
+      feedbackEl.className = 'feedback';
+      
+      // Enable input and button
+      answerInput.disabled = false;
+      submitBtn.disabled = false;
+      
+      // Reset processing flag
+      isProcessingAnswer = false;
+      
+      // Focus with a slight delay to ensure the DOM is updated
+      setTimeout(() => {
+        answerInput.focus();
+      }, 50);
+    }
+    
+    function createFlyingEmojis() {
+      for (let i = 0; i < 10; i++) {
+        const emoji = document.createElement('div');
+        emoji.className = 'emoji';
+        emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        
+        // Random position and movement
+        const x = (Math.random() - 0.5) * 400;
+        const y = -300 - Math.random() * 300;
+        const r = (Math.random() - 0.5) * 360;
+        
+        emoji.style.setProperty('--x', `${x}px`);
+        emoji.style.setProperty('--y', `${y}px`);
+        emoji.style.setProperty('--r', `${r}deg`);
+        
+        // Initial position
+        emoji.style.left = '50%';
+        emoji.style.top = '50%';
+        
+        container.appendChild(emoji);
+        
+        // Remove emoji after animation completes
+        setTimeout(() => {
+          emoji.remove();
+        }, 2000);
+      }
+    }
+    
+    // Second fix: Create a function to generate a unique certificate ID
+    function generateCertificateId() {
+      // Get current date components
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      
+      // Generate random component (4 characters)
+      const characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let randomPart = '';
+      for (let i = 0; i < 4; i++) {
+        randomPart += characters.charAt(Math.floor(Math.random() * characters.length));
+      }
+      
+      // Create certificate ID combining date and random part
+      return `MTH-${year}${month}${day}-${randomPart}`;
+    }
+    
+    // Store the certificate ID when generating
+    let certificateId = '';
+    
+    // Update the certificate with the ID
+    function updateCertificate() {
+      // Generate a new certificate ID
+      certificateId = generateCertificateId();
+      
+      // Add certificate ID to the on-screen certificate
+      const certificateIdEl = document.getElementById('certificateId');
+      if (certificateIdEl) {
+        certificateIdEl.textContent = `Certificate ID: ${certificateId}`;
+      }
+      
+      // Update other certificate elements as before
+      certificateName.textContent = playerName;
+      certificateScore.textContent = `Score: ${score} out of ${totalQuestions * 10}`;
+      
+      // Update date
+      const today = new Date();
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      certificateDate.textContent = `Date: ${today.toLocaleDateString('en-US', options)}`;
+    }
+    
+    // Update the downloadCertificate function with a more reliable approach
+    function downloadCertificate() {
+      // Make sure certificate ID is generated if it doesn't exist
+      if (!certificateId) {
+        certificateId = generateCertificateId();
+      }
+      
+      // Show loading message
+      const loadingMessage = document.createElement('div');
+      loadingMessage.textContent = 'Generating certificate...';
+      loadingMessage.style.position = 'fixed';
+      loadingMessage.style.top = '50%';
+      loadingMessage.style.left = '50%';
+      loadingMessage.style.transform = 'translate(-50%, -50%)';
+      loadingMessage.style.background = 'rgba(0,0,0,0.7)';
+      loadingMessage.style.color = 'white';
+      loadingMessage.style.padding = '20px';
+      loadingMessage.style.borderRadius = '10px';
+      loadingMessage.style.zIndex = '9999';
+      document.body.appendChild(loadingMessage);
+      
+      // Create a new image directly using canvas
+      try {
+        // Create a canvas element
+        const canvas = document.createElement('canvas');
+        canvas.width = 600;
+        canvas.height = 800;
+        const ctx = canvas.getContext('2d');
+        
+        // Fill background
+        ctx.fillStyle = '#fffde7';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Draw border
+        ctx.strokeStyle = '#ffd700';
+        ctx.lineWidth = 20;
+        ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+        
+        // Add some decorative stars
+        ctx.fillStyle = 'rgba(255, 215, 0, 0.1)';
+        for (let i = 0; i < 30; i++) {
+          const x = Math.random() * canvas.width;
+          const y = Math.random() * canvas.height;
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(Math.random() * Math.PI * 2);
+          ctx.font = '30px serif';
+          ctx.fillText('★', 0, 0);
+          ctx.restore();
+        }
+        
+        // Add medal emoji
+        ctx.font = '50px serif';
+        ctx.fillStyle = 'black';
+        ctx.textAlign = 'center';
+        ctx.fillText('🏅', canvas.width / 2, 70);
+        
+        // Add title
+        ctx.font = 'bold 28px Verdana';
+        ctx.fillStyle = '#b71c1c';
+        ctx.fillText('Certificate of Achievement', canvas.width / 2, 130);
+        
+        // Add certificate text
+        ctx.font = '18px Verdana';
+        ctx.fillStyle = 'black';
+        ctx.fillText('This is to certify that', canvas.width / 2, 180);
+        
+        // Add name
+        ctx.font = 'bold 28px Verdana';
+        ctx.fillStyle = '#1a237e';
+        ctx.fillText(playerName, canvas.width / 2, 230);
+        
+        // Add underline for name
+        ctx.strokeStyle = '#ffd700';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(canvas.width / 2 - 150, 240);
+        ctx.lineTo(canvas.width / 2 + 150, 240);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // Continue with certificate text
+        ctx.font = '18px Verdana';
+        ctx.fillStyle = 'black';
+        ctx.fillText('has successfully completed the', canvas.width / 2, 290);
+        
+        ctx.font = 'bold 20px Verdana';
+        ctx.fillText('Multiplication Math Quiz', canvas.width / 2, 330);
+        
+        // Add score
+        ctx.font = 'bold 24px Verdana';
+        ctx.fillStyle = '#2e7d32';
+        ctx.fillText(`Score: ${score} out of ${totalQuestions * 10}`, canvas.width / 2, 390);
+        
+        // Add date
+        const today = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = today.toLocaleDateString('en-US', options);
+        ctx.font = '16px Verdana';
+        ctx.fillStyle = '#616161';
+        ctx.fillText(`Date: ${formattedDate}`, canvas.width / 2, 440);
+        
+        // Add certificate ID
+        ctx.font = '14px monospace';
+        ctx.fillStyle = '#616161';
+        
+        // Draw rectangle behind certificate ID
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+        const idText = `Certificate ID: ${certificateId}`;
+        const idWidth = ctx.measureText(idText).width + 20;
+        ctx.fillRect(canvas.width / 2 - idWidth / 2, 710 - 14, idWidth, 28);
+        
+        // Draw certificate ID text
+        ctx.fillStyle = '#616161';
+        ctx.fillText(idText, canvas.width / 2, 710);
+        
+        // Add star seal
+        ctx.fillStyle = '#ffd700';
+        ctx.beginPath();
+        ctx.arc(500, 650, 35, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.font = '40px serif';
+        ctx.fillStyle = '#b71c1c';
+        ctx.fillText('🌟', 500, 660);
+        
+        // Add ribbon
+        ctx.fillStyle = '#b71c1c';
+        ctx.fillRect(40, 20, 40, 70);
+        
+        // Add ribbon triangle
+        ctx.beginPath();
+        ctx.moveTo(40, 90);
+        ctx.lineTo(60, 110);
+        ctx.lineTo(80, 90);
+        ctx.fill();
+        
+        // Convert canvas to image and trigger download
+        const image = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.download = `${playerName}_certificate.png`;
+        link.href = image;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        document.body.removeChild(loadingMessage);
+      } catch (err) {
+        console.error('Error generating certificate:', err);
+        alert('Could not generate certificate. Please try again.');
+        document.body.removeChild(loadingMessage);
+      }
+    }
+    
+    // Update the addCertificateStars function to work with the new structure
+    function addCertificateStars() {
+      const certificateBackground = document.querySelector('.certificate-background');
+      
+      // Clear any existing stars
+      while (certificateBackground.firstChild) {
+        certificateBackground.removeChild(certificateBackground.firstChild);
+      }
+      
+      // Add stars to the certificate background
+      for (let i = 0; i < 50; i++) {
+        const star = document.createElement('div');
+        star.className = 'certificate-star';
+        star.textContent = '★';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.opacity = 0.1 + Math.random() * 0.1;
+        star.style.transform = `rotate(${Math.random() * 360}deg)`;
+        certificateBackground.appendChild(star);
+      }
+    }
+    
+    function showCongratsScreen() {
+      // Hide quiz elements
+      quizContainer.style.display = 'none';
+      
+      // Show congrats screen
+      congratsContainer.style.display = 'flex';
+      
+      // Display player name
+      playerNameDisplay.textContent = playerName;
+      
+      // Clear previous award elements
+      trophyContainer.innerHTML = '';
+      starsContainer.innerHTML = '';
+      
+      // Calculate percentage score
+      const percentScore = (score / (totalQuestions * 10)) * 100;
+      
+      // Update trophy and stars based on score
+      if (percentScore === 100) {
+        // Perfect score: Gold trophy with crown and 5 gold stars
+        trophyContainer.innerHTML = `
+          <div class="crown">👑</div>
+          <div class="trophy">🏆</div>
+        `;
+        
+        for (let i = 0; i < 5; i++) {
+          const star = document.createElement('span');
+          star.className = 'star-gold';
+          star.textContent = '⭐';
+          star.style.animationDelay = `${i * 0.2}s`;
+          starsContainer.appendChild(star);
+        }
+        
+        congratsMessage.textContent = "Wow! You're a multiplication superstar! Perfect score! 🤩";
+      } 
+      else if (percentScore >= 80) {
+        // Excellent score: Trophy with 4 gold stars
+        trophyContainer.innerHTML = `<div class="trophy">🏆</div>`;
+        
+        for (let i = 0; i < 4; i++) {
+          const star = document.createElement('span');
+          star.className = 'star-gold';
+          star.textContent = '⭐';
+          star.style.animationDelay = `${i * 0.2}s`;
+          starsContainer.appendChild(star);
+        }
+        
+        congratsMessage.textContent = "Great job! You're awesome at multiplication! 🌟";
+      }
+      else if (percentScore >= 60) {
+        // Good score: Gold medal with 3 stars
+        trophyContainer.innerHTML = `<div class="medal-gold">🥇</div>`;
+        
+        for (let i = 0; i < 3; i++) {
+          const star = document.createElement('span');
+          star.className = i < 2 ? 'star-gold' : 'star-silver';
+          star.textContent = '⭐';
+          star.style.animationDelay = `${i * 0.2}s`;
+          starsContainer.appendChild(star);
+        }
+        
+        congratsMessage.textContent = "Good work! Keep practicing and you'll be a math whiz! 💪";
+      }
+      else if (percentScore >= 40) {
+        // Decent score: Silver medal with 2 stars
+        trophyContainer.innerHTML = `<div class="medal-silver">🥈</div>`;
+        
+        for (let i = 0; i < 2; i++) {
+          const star = document.createElement('span');
+          star.className = 'star-silver';
+          star.textContent = '⭐';
+          star.style.animationDelay = `${i * 0.2}s`;
+          starsContainer.appendChild(star);
+        }
+        
+        congratsMessage.textContent = "Nice effort! Keep practicing your multiplication tables! 📚";
+      }
+      else {
+        // Learning score: Bronze medal with 1 star and ribbon
+        trophyContainer.innerHTML = `<div class="medal-bronze">🥉</div>`;
+        
+        const star = document.createElement('span');
+        star.className = 'star-silver';
+        star.textContent = '⭐';
+        starsContainer.appendChild(star);
+        
+        const ribbon = document.createElement('span');
+        ribbon.className = 'ribbon';
+        ribbon.textContent = '🎀';
+        starsContainer.appendChild(ribbon);
+        
+        congratsMessage.textContent = "You did it! Keep practicing and you'll get even better! 🌈";
+      }
+      
+      // Update final score
+      finalScore.textContent = `Your Score: ${score} out of ${totalQuestions * 10}`;
+      
+      // Create confetti effect
+      createConfetti();
+      
+      // Add more confetti for perfect scores
+      if (percentScore === 100) {
+        setTimeout(() => {
+          createConfetti();
+        }, 500);
+      }
+      
+      // Scroll to ensure the Play Again button is visible
+      window.scrollTo(0, document.body.scrollHeight);
+      
+      // Update certificate with player's info including the unique ID
+      updateCertificate();
+    }
+    
+    function createConfetti() {
+      const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', 
+                     '#ff8a00', '#e52e71', '#4a90e2', '#9013fe', '#27ae60', '#f39c12'];
+      const shapes = ['circle', 'square', 'triangle'];
+      
+      for (let i = 0; i < 150; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        confetti.style.animationDelay = Math.random() * 2 + 's';
+        
+        // Randomly sized confetti
+        const size = Math.random() * 10 + 5;
+        confetti.style.width = `${size}px`;
+        confetti.style.height = `${size}px`;
+        
+        // Different shapes
+        const shape = shapes[Math.floor(Math.random() * shapes.length)];
+        if (shape === 'circle') {
+          confetti.style.borderRadius = '50%';
+        } else if (shape === 'triangle') {
+          confetti.style.width = '0';
+          confetti.style.height = '0';
+          confetti.style.borderLeft = `${size}px solid transparent`;
+          confetti.style.borderRight = `${size}px solid transparent`;
+          confetti.style.borderBottom = `${size}px solid ${confetti.style.backgroundColor}`;
+          confetti.style.backgroundColor = 'transparent';
+        }
+        
+        document.body.appendChild(confetti);
+        
+        // Remove confetti after animation ends
+        setTimeout(() => {
+          confetti.remove();
+        }, 5000);
+      }
+    }
+    
+    function resetQuiz() {
+      // Reset variables
+      currentQuestion = 1;
+      score = 0;
+      
+      // Reset display back to name input
+      congratsContainer.style.display = 'none';
+      nameContainer.style.display = 'flex';
+      quizContainer.style.display = 'none';
+      
+      // Reset score display
+      scoreEl.textContent = 'Score: 0';
+      
+      // Enable input and button
+      submitBtn.disabled = false;
+      answerInput.disabled = false;
+      
+      // Clear name input for new player
+      nameInput.value = '';
+      nameInput.focus();
+    }
+    
+    // Add fun name input messages
+    const emptyNameMessages = [
+      "Oops! I don't know what to call you! 🤔",
+      "Please tell me your name so we can be friends! 👋",
+      "Your name is missing! Did the name monster take it? 👾",
+      "The name box looks lonely without your name! 📝",
+      "Hmm, I can't start without knowing who you are! 🧩",
+      "Your name is like a secret password to start the game! 🔑",
+      "Every math hero needs a cool name! What's yours? 🦸‍♂️",
+      "Name please! The numbers are waiting to meet you! 🔢",
+      "The quiz needs to know its new champion! 🏆",
+      "What's your name? The multiplication tables want to know! ✨"
+    ];
+    
+    function getRandomNameMessage() {
+      return emptyNameMessages[Math.floor(Math.random() * emptyNameMessages.length)];
+    }
+    
+    // Update the start button event listener
+    startBtn.addEventListener('click', function() {
+      // Check if name input is empty
+      if (!nameInput.value.trim()) {
+        // Create or update feedback message
+        let nameErrorMsg = document.getElementById('nameErrorMsg');
+        if (!nameErrorMsg) {
+          nameErrorMsg = document.createElement('div');
+          nameErrorMsg.id = 'nameErrorMsg';
+          nameErrorMsg.style.color = '#e74c3c';
+          nameErrorMsg.style.fontSize = '1.2rem';
+          nameErrorMsg.style.margin = '10px 0';
+          nameErrorMsg.style.padding = '8px';
+          nameErrorMsg.style.borderRadius = '10px';
+          nameErrorMsg.style.background = 'rgba(255, 255, 255, 0.7)';
+          nameContainer.insertBefore(nameErrorMsg, startBtn);
+        }
+        
+        // Show random message
+        nameErrorMsg.textContent = getRandomNameMessage();
+        
+        // Shake animation
+        nameInput.classList.add('shake-animation');
+        setTimeout(() => {
+          nameInput.classList.remove('shake-animation');
+        }, 500);
+        
+        // Focus on name input
+        nameInput.focus();
+        return;
+      }
+      
+      // If we have a name, proceed as normal
+      playerName = nameInput.value.trim() || "Friend";
+      
+      // Update player name display
+      playerNameDisplay.textContent = playerName;
+      
+      // Hide name container and show quiz
+      nameContainer.style.display = 'none';
+      quizContainer.style.display = 'block';
+      
+      // Initialize first question
+      generateQuestion();
+    });
+    
+    // Also handle Enter key for name input
+    nameInput.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        startBtn.click();
+      }
+    });
+    
+    // Create personalized message variants that include the player name
+    function createPersonalizedMessages() {
+      // Base message arrays
+      const basePositiveMessages = [
+        "Excellent work! 🎉", 
+        "You're on fire! 🔥", 
+        "Great job! 👏", 
+        "Well done! 🌟", 
+        "Keep it up! 💪",
+        "Amazing! You're so smart! 🧠",
+        "Wow! You got it right! 🤩",
+        "Super duper! 🦸‍♂️",
+        "You're a math wizard! ✨",
+        "Fantastic job! 🎊"
+      ];
+      
+      const baseNegativeMessages = [
+        "Oops, try again! 🙂", 
+        "Don't worry, keep trying! 💪", 
+        "Almost there, you can do it! 👍", 
+        "Nice effort! 🌻", 
+        "Keep going, you'll get it! 🚀",
+        "Good try! Let's learn together! 📚",
+        "Not quite, but you're learning! 🌈",
+        "It's okay, math takes practice! 🧩",
+        "You're still awesome! 🌟",
+        "Every mistake helps us learn! 🌱"
+      ];
+      
+      // Personalized message templates (with {name} placeholder)
+      const personalizedPositive = [
+        "Way to go, {name}! 🎉",
+        "Excellent work, {name}! You're amazing! ✨",
+        "{name}, that's correct! 🌟",
+        "You're crushing it, {name}! 💪",
+        "Look at you go, {name}! 🤩",
+        "{name}, you're a multiplication master! 👑",
+        "High five, {name}! That's right! 🙌",
+        "Brilliant answer, {name}! 🧠",
+        "{name}, you're getting so good at this! 🚀",
+        "Superstar {name}! Keep it up! ⭐"
+      ];
+      
+      const personalizedNegative = [
+        "Not quite, {name}, but you're getting closer! 🌈",
+        "Keep trying, {name}! You can do it! 💪",
+        "{name}, let's figure this one out together! 🧩",
+        "Almost there, {name}! 👍",
+        "Good attempt, {name}! Practice makes perfect! 📚",
+        "{name}, mistakes help our brains grow! 🌱",
+        "Don't give up, {name}! You're doing great! 🌟",
+        "{name}, I believe in you! Try once more! 🦸‍♂️",
+        "You'll get it next time, {name}! 🙂",
+        "{name}, let's learn from this one! 👨‍🏫"
+      ];
+      
+      // Combine base and personalized messages
+      return {
+        positive: [...basePositiveMessages, ...personalizedPositive],
+        negative: [...baseNegativeMessages, ...personalizedNegative]
+      };
+    }
+    
+    function getRandomMessage(messageType) {
+      // Create messages including personalized ones
+      const messages = createPersonalizedMessages();
+      const selectedArray = messageType === 'positive' ? messages.positive : messages.negative;
+      
+      // Get a random message
+      let message = selectedArray[Math.floor(Math.random() * selectedArray.length)];
+      
+      // Replace {name} placeholder with actual name if present
+      return message.replace('{name}', playerName);
+    }
+    
+    submitBtn.addEventListener('click', function() {
+      // Prevent multiple submissions while processing
+      if (isProcessingAnswer) {
+        return;
+      }
+      
+      // Check if input is empty
+      if (!answerInput.value.trim()) {
+        feedbackEl.textContent = getRandomEmptyMessage();
+        feedbackEl.classList.remove('correct', 'incorrect');
+        answerInput.focus();
+        // Add a subtle shake animation to the input
+        answerInput.classList.add('shake-animation');
+        setTimeout(() => {
+          answerInput.classList.remove('shake-animation');
+        }, 500);
+        return;
+      }
+      
+      const userAnswer = parseInt(answerInput.value.trim(), 10);
+      const correctAnswer = currentA * currentB;
+      
+      if (isNaN(userAnswer)) {
+        feedbackEl.textContent = "Please enter a number.";
+        return;
+      }
+      
+      // Set processing flag to prevent multiple submissions
+      isProcessingAnswer = true;
+      
+      // Disable input and button immediately
+      answerInput.disabled = true;
+      submitBtn.disabled = true;
+      
+      if (userAnswer === correctAnswer) {
+        score += 10;
+        feedbackEl.textContent = getRandomMessage('positive');
+        feedbackEl.classList.add('correct');
+        feedbackEl.classList.remove('incorrect');
+        createFlyingEmojis();
+      } else {
+        feedbackEl.textContent = getRandomMessage('negative') + ` (${currentA} × ${currentB} = ${correctAnswer})`;
+        feedbackEl.classList.add('incorrect');
+        feedbackEl.classList.remove('correct');
+      }
+      
+      scoreEl.textContent = `Score: ${score}`;
+      currentQuestion++;
+      
+      if (currentQuestion > totalQuestions) {
+        setTimeout(showCongratsScreen, 1500);
+      } else {
+        setTimeout(generateQuestion, 1500);
+      }
+    });
+    
+    // Submit answer on pressing Enter key
+    answerInput.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        // Prevent default behavior to ensure our handler runs first
+        event.preventDefault();
+        submitBtn.click();
+      }
+    });
+    
+    // Initialize first question
+    generateQuestion();
+    
+    // Theme selector functionality
+    const themeOptions = document.querySelectorAll('.theme-option');
+    
+    // Define themes
+    const themes = {
+      'blue-purple': {
+        '--bg-gradient-1': '#a1c4fd',
+        '--bg-gradient-2': '#c2e9fb',
+        '--bg-gradient-3': '#ffecd2',
+        '--primary-color': '#4a90e2',
+        '--secondary-color': '#9013fe',
+        '--accent-color': '#ffc107',
+        '--text-color': '#34495e',
+        '--title-gradient-1': '#ff8a00',
+        '--title-gradient-2': '#e52e71',
+        '--title-gradient-3': '#4a90e2',
+        '--title-gradient-4': '#9013fe',
+        '--border-gradient-1': '#ff0066',
+        '--border-gradient-2': '#ffcc00',
+        '--border-gradient-3': '#00ccff',
+        '--border-gradient-4': '#cc00ff',
+        '--button-gradient-1': '#4a90e2',
+        '--button-gradient-2': '#9013fe',
+        '--correct-color': '#27ae60',
+        '--incorrect-color': '#e74c3c'
+      },
+      'green-yellow': {
+        '--bg-gradient-1': '#c1ffc1',
+        '--bg-gradient-2': '#dcffc1',
+        '--bg-gradient-3': '#fffacd',
+        '--primary-color': '#2ecc71',
+        '--secondary-color': '#f1c40f',
+        '--accent-color': '#f39c12',
+        '--text-color': '#2c3e50',
+        '--title-gradient-1': '#27ae60',
+        '--title-gradient-2': '#f39c12',
+        '--title-gradient-3': '#2ecc71',
+        '--title-gradient-4': '#f1c40f',
+        '--border-gradient-1': '#27ae60',
+        '--border-gradient-2': '#f39c12',
+        '--border-gradient-3': '#2ecc71',
+        '--border-gradient-4': '#f1c40f',
+        '--button-gradient-1': '#2ecc71',
+        '--button-gradient-2': '#f1c40f',
+        '--correct-color': '#27ae60',
+        '--incorrect-color': '#e74c3c'
+      },
+      'pink-orange': {
+        '--bg-gradient-1': '#ffc3a0',
+        '--bg-gradient-2': '#ffafbd',
+        '--bg-gradient-3': '#ffdde1',
+        '--primary-color': '#e91e63',
+        '--secondary-color': '#ff9800',
+        '--accent-color': '#ff6b6b',
+        '--text-color': '#4a4a4a',
+        '--title-gradient-1': '#ff6b6b',
+        '--title-gradient-2': '#ff9800',
+        '--title-gradient-3': '#e91e63',
+        '--title-gradient-4': '#ff6b6b',
+        '--border-gradient-1': '#ff416c',
+        '--border-gradient-2': '#ff9800',
+        '--border-gradient-3': '#ff4b2b',
+        '--border-gradient-4': '#ff6b6b',
+        '--button-gradient-1': '#e91e63',
+        '--button-gradient-2': '#ff9800',
+        '--correct-color': '#2ecc71',
+        '--incorrect-color': '#e74c3c'
+      },
+      'teal-blue': {
+        '--bg-gradient-1': '#80deea',
+        '--bg-gradient-2': '#b3e5fc',
+        '--bg-gradient-3': '#e0f7fa',
+        '--primary-color': '#00bcd4',
+        '--secondary-color': '#3498db',
+        '--accent-color': '#4fc3f7',
+        '--text-color': '#2c3e50',
+        '--title-gradient-1': '#00bcd4',
+        '--title-gradient-2': '#3498db',
+        '--title-gradient-3': '#039be5',
+        '--title-gradient-4': '#4fc3f7',
+        '--border-gradient-1': '#00bcd4',
+        '--border-gradient-2': '#3498db',
+        '--border-gradient-3': '#039be5',
+        '--border-gradient-4': '#4fc3f7',
+        '--button-gradient-1': '#00bcd4',
+        '--button-gradient-2': '#3498db',
+        '--correct-color': '#27ae60',
+        '--incorrect-color': '#e74c3c'
+      },
+      'dark': {
+        '--bg-gradient-1': '#2c3e50',
+        '--bg-gradient-2': '#34495e',
+        '--bg-gradient-3': '#3c4c5d',
+        '--primary-color': '#3498db',
+        '--secondary-color': '#9b59b6',
+        '--accent-color': '#f1c40f',
+        '--text-color': '#ecf0f1',
+        '--title-gradient-1': '#f1c40f',
+        '--title-gradient-2': '#9b59b6',
+        '--title-gradient-3': '#3498db',
+        '--title-gradient-4': '#2ecc71',
+        '--border-gradient-1': '#3498db',
+        '--border-gradient-2': '#9b59b6',
+        '--border-gradient-3': '#2ecc71',
+        '--border-gradient-4': '#f1c40f',
+        '--button-gradient-1': '#3498db',
+        '--button-gradient-2': '#9b59b6',
+        '--correct-color': '#2ecc71',
+        '--incorrect-color': '#e74c3c'
+      }
+    };
+    
+    // Function to apply theme
+    function applyTheme(themeName) {
+      const theme = themes[themeName];
+      if (!theme) return;
+      
+      // Apply each CSS variable
+      Object.keys(theme).forEach(key => {
+        document.documentElement.style.setProperty(key, theme[key]);
+      });
+      
+      // Remove any previous dark mode class
+      document.body.classList.remove('theme-dark-mode');
+      
+      // Add dark mode class for dark theme to handle text visibility
+      if (themeName === 'dark') {
+        document.body.classList.add('theme-dark-mode');
+      }
+      
+      // Save preference
+      localStorage.setItem('preferredTheme', themeName);
+    }
+    
+    // Theme option click event
+    themeOptions.forEach(option => {
+      option.addEventListener('click', function() {
+        // Remove active class from all options
+        themeOptions.forEach(opt => opt.classList.remove('active'));
+        
+        // Add active class to selected option
+        this.classList.add('active');
+        
+        // Apply theme
+        const selectedTheme = this.getAttribute('data-theme');
+        applyTheme(selectedTheme);
+      });
+    });
+    
+    // Load saved preferences when page loads
+    window.addEventListener('DOMContentLoaded', function() {
+      // Focus the name input
+      nameInput.focus();
+      
+      // Load saved font preference if exists
+      const savedFont = localStorage.getItem('preferredFont');
+      if (savedFont) {
+        document.documentElement.style.setProperty('--main-font', savedFont);
+        
+        // Update active class
+        fontOptions.forEach(option => {
+          if (option.getAttribute('data-font') === savedFont) {
+            option.classList.add('active');
+          } else {
+            option.classList.remove('active');
+          }
+        });
+      }
+      
+      // Load saved theme preference if exists
+      const savedTheme = localStorage.getItem('preferredTheme');
+      if (savedTheme) {
+        applyTheme(savedTheme);
+        
+        // Update active class
+        themeOptions.forEach(option => {
+          if (option.getAttribute('data-theme') === savedTheme) {
+            option.classList.add('active');
+          } else {
+            option.classList.remove('active');
+          }
+        });
+      }
+      
+      // Add star background to certificate
+      addCertificateStars();
+    });
+    
+    // Download certificate button event listener
+    downloadBtn.addEventListener('click', downloadCertificate);
+    
+    // Add device orientation handling
+    window.addEventListener('orientationchange', function() {
+      // Adjust UI based on orientation
+      setTimeout(function() {
+        // Give browser time to update dimensions
+        adjustUIForOrientation();
+        
+        // Re-focus the current input if needed
+        if (document.activeElement && 
+            (document.activeElement.tagName === 'INPUT' || 
+             document.activeElement.tagName === 'TEXTAREA')) {
+          setTimeout(() => {
+            document.activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 300);
+        }
+      }, 200);
+    });
+    
+    function adjustUIForOrientation() {
+      // Get the container element
+      const container = document.querySelector('.container');
+      
+      // If we're in a question and in landscape on a small device
+      if (window.innerHeight < 500 && window.innerWidth > window.innerHeight) {
+        // Mobile landscape mode - ensure critical elements are visible
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+        
+        // If certificate is shown, make sure it fits
+        const certificate = document.querySelector('.certificate');
+        if (certificate && getComputedStyle(certificate).display !== 'none') {
+          certificate.style.transform = 'scale(0.7)';
+          certificate.style.transformOrigin = 'top center';
+        }
+      } else {
+        // Reset any manual adjustments
+        const certificate = document.querySelector('.certificate');
+        if (certificate) {
+          certificate.style.transform = '';
+        }
+      }
+    }
+    
+    // Fix the play again button by properly binding the resetQuiz function
+    playAgainBtn.addEventListener('click', function() {
+      resetQuiz();
+    });
+    
+    // Fix the font selection functionality
+    fontOptions.forEach(option => {
+      option.addEventListener('click', function() {
+        // Remove active class from all options
+        fontOptions.forEach(opt => opt.classList.remove('active'));
+        
+        // Add active class to selected option
+        this.classList.add('active');
+        
+        // Apply font
+        const selectedFont = this.getAttribute('data-font');
+        document.documentElement.style.setProperty('--main-font', selectedFont);
+        
+        // Save preference
+        localStorage.setItem('preferredFont', selectedFont);
+      });
+    });
+  </script>
+</body>
+</html>
