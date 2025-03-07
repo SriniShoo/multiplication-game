@@ -288,6 +288,9 @@
       text-align: center;
       animation: popIn 1s ease-out forwards;
       width: 100%;
+      position: relative;
+      min-height: 100vh;
+      padding-bottom: 50px;
     }
     
     .congrats-title {
@@ -454,12 +457,14 @@
     }
     
     .confetti {
-      position: absolute;
+      position: fixed;
       width: 15px;
       height: 15px;
       background-color: #f00;
       animation: confetti-fall 5s linear forwards;
       border-radius: 2px;
+      will-change: transform;
+      --direction: 0;
     }
     
     @keyframes popIn {
@@ -475,11 +480,20 @@
     
     @keyframes confetti-fall {
       0% { 
-        transform: translateY(-100vh) rotate(0deg);
+        transform: translateY(0) translateX(0) rotate(0deg);
         opacity: 1;
       }
+      25% {
+        transform: translateY(25vh) translateX(calc(var(--direction) * 15px)) rotate(180deg);
+      }
+      50% {
+        transform: translateY(50vh) translateX(calc(var(--direction) * -10px)) rotate(360deg);
+      }
+      75% {
+        transform: translateY(75vh) translateX(calc(var(--direction) * 15px)) rotate(540deg);
+      }
       100% { 
-        transform: translateY(100vh) rotate(720deg);
+        transform: translateY(100vh) translateX(calc(var(--direction) * -5px)) rotate(720deg);
         opacity: 0;
       }
     }
@@ -712,8 +726,8 @@
     
     /* Certificate styles - COMPLETE REDESIGN to fix overlapping */
     .certificate {
-      width: 90%;
-      max-width: 450px;
+      width: 95%;
+      max-width: 550px;
       height: 600px;
       background-color: #fffde7;
       border: 10px solid #ffd700;
@@ -896,34 +910,43 @@
     }
     
     /* Update certificate button text */
-    .download-btn {
-      margin-top: 15px;
-      background: linear-gradient(90deg, #4CAF50, #8BC34A);
+    .download-btn, .share-btn {
+      margin-top: 0;
+      background: linear-gradient(90deg, var(--button-gradient-1), var(--button-gradient-2));
       border: none;
       color: white;
-      padding: 10px 20px;
+      padding: 15px;
       font-size: 1.2rem;
-      border-radius: 30px;
+      border-radius: 50%;
       cursor: pointer;
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
       transition: all 0.3s;
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 60px;
+      height: 60px;
+      position: relative;
+      z-index: 5;
     }
     
-    .download-btn:hover {
+    .download-btn:hover, .share-btn:hover {
       transform: translateY(-3px);
       box-shadow: 0 6px 12px rgba(0,0,0,0.3);
     }
     
-    .download-btn:active {
+    .download-btn:active, .share-btn:active {
       transform: translateY(1px);
     }
     
-    .download-icon {
-      margin-right: 8px;
-      font-size: 1.4rem;
+    .download-icon, .share-icon {
+      width: 28px;
+      height: 28px;
+      color: white;
+    }
+    
+    .theme-dark-mode .download-icon, .theme-dark-mode .share-icon {
+      color: white;
     }
     
     /* Remove PDF specific styles and update with PNG styles */
@@ -1275,6 +1298,24 @@
       background: rgba(52, 73, 94, 0.9);
       color: #ecf0f1;
     }
+
+    /* Certificate container styles */
+    .certificate-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 20px auto;
+    }
+
+    /* Certificate action buttons container */
+    .certificate-actions {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 25px;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
@@ -1329,7 +1370,9 @@
     <div class="name-container" id="nameContainer">
       <h1 class="welcome-title">Multiplication Quiz</h1>
       <p style="font-size: 1.5rem; margin-bottom: 20px;">👋 What's your name?</p>
-      <input type="text" class="name-input" id="nameInput" placeholder="Enter your name here" maxlength="20" autofocus>
+      <input type="text" class="name-input" id="nameInput" 
+             placeholder="Enter your name here" maxlength="20" 
+             enterkeyhint="go" autocomplete="off" autofocus>
       <button class="start-btn" id="startBtn">Let's Start!</button>
     </div>
     
@@ -1337,7 +1380,8 @@
     <div id="quizContainer" style="display: none;">
       <h1>Multiplication Quiz</h1>
       <div class="question" id="question">Question will appear here</div>
-      <input type="number" id="answerInput" placeholder="Your answer" />
+      <input type="number" id="answerInput" placeholder="Your answer" 
+             enterkeyhint="send" inputmode="numeric" pattern="[0-9]*" />
       <br>
       <button id="submitBtn">Submit Answer</button>
       <div class="feedback" id="feedback"></div>
@@ -1373,9 +1417,22 @@
           <div class="certificate-seal">🌟</div>
           <div class="certificate-ribbon"></div>
         </div>
-        <button class="download-btn" id="downloadBtn">
-          <span class="download-icon">📥</span> Download Certificate (PNG)
-        </button>
+        <div class="certificate-actions">
+          <button class="download-btn" id="downloadBtn">
+            <svg class="download-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 16L12 4M12 16L8 12M12 16L16 12M4 20H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="share-btn" id="shareBtn">
+            <svg class="share-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 15C7.65685 15 9 13.6569 9 12C9 10.3431 7.65685 9 6 9C4.34315 9 3 10.3431 3 12C3 13.6569 4.34315 15 6 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M18 9C19.6569 9 21 7.65685 21 6C21 4.34315 19.6569 3 18 3C16.3431 3 15 4.34315 15 6C15 7.65685 16.3431 9 18 9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M18 21C19.6569 21 21 19.6569 21 18C21 16.3431 19.6569 15 18 15C16.3431 15 15 16.3431 15 18C15 19.6569 16.3431 21 18 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 10.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 13.5L15 16.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
       </div>
       
       <div class="button-container">
@@ -1471,7 +1528,7 @@
       return emptyInputMessages[Math.floor(Math.random() * emptyInputMessages.length)];
     }
     
-    // First fix: Improve focus handling for answer input
+    // Update the generateQuestion function for better mobile keyboard handling
     function generateQuestion() {
       currentA = Math.floor(Math.random() * 20) + 1;
       currentB = Math.floor(Math.random() * 20) + 1;
@@ -1496,10 +1553,22 @@
       // Reset processing flag
       isProcessingAnswer = false;
       
-      // Focus with a slight delay to ensure the DOM is updated
+      // Enhanced focus handling
       setTimeout(() => {
         answerInput.focus();
-      }, 50);
+        
+        // For mobile devices, add extra handling
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+          // This helps on some mobile browsers
+          answerInput.click();
+          
+          // Ensure input is in the viewport
+          answerInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          
+          // Add a special attribute that helps with some mobile keyboards
+          answerInput.setAttribute('enterkeyhint', 'done');
+        }
+      }, 100);
     }
     
     function createFlyingEmojis() {
@@ -1573,8 +1642,8 @@
       certificateDate.textContent = `Date: ${today.toLocaleDateString('en-US', options)}`;
     }
     
-    // Update the downloadCertificate function with a more reliable approach
-    function downloadCertificate() {
+    // Update the downloadCertificate function to support both download and sharing
+    function downloadCertificate(shouldDownload = true) {
       // Make sure certificate ID is generated if it doesn't exist
       if (!certificateId) {
         certificateId = generateCertificateId();
@@ -1582,7 +1651,7 @@
       
       // Show loading message
       const loadingMessage = document.createElement('div');
-      loadingMessage.textContent = 'Generating certificate...';
+      loadingMessage.textContent = shouldDownload ? 'Generating certificate...' : 'Preparing certificate for sharing...';
       loadingMessage.style.position = 'fixed';
       loadingMessage.style.top = '50%';
       loadingMessage.style.left = '50%';
@@ -1711,19 +1780,77 @@
         ctx.lineTo(80, 90);
         ctx.fill();
         
-        // Convert canvas to image and trigger download
-        const image = canvas.toDataURL('image/png');
-        const link = document.createElement('a');
-        link.download = `${playerName}_certificate.png`;
-        link.href = image;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        document.body.removeChild(loadingMessage);
+        // Handle according to action type (download or share)
+        if (shouldDownload) {
+          // Convert canvas to image and trigger download
+          const image = canvas.toDataURL('image/png');
+          const link = document.createElement('a');
+          link.download = `${playerName}_certificate.png`;
+          link.href = image;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          document.body.removeChild(loadingMessage);
+        } else {
+          // Return canvas for sharing
+          document.body.removeChild(loadingMessage);
+          return canvas;
+        }
       } catch (err) {
         console.error('Error generating certificate:', err);
         alert('Could not generate certificate. Please try again.');
         document.body.removeChild(loadingMessage);
+        return null;
+      }
+    }
+    
+    // Function to share certificate (uses downloadCertificate)
+    function shareCertificate() {
+      // Check if Web Share API is supported
+      if (navigator.share) {
+        // Get the certificate canvas from the downloadCertificate function
+        const canvas = downloadCertificate(false);
+        
+        if (canvas) {
+          // Show loading message
+          const loadingMessage = document.createElement('div');
+          loadingMessage.textContent = 'Sharing certificate...';
+          loadingMessage.style.position = 'fixed';
+          loadingMessage.style.top = '50%';
+          loadingMessage.style.left = '50%';
+          loadingMessage.style.transform = 'translate(-50%, -50%)';
+          loadingMessage.style.background = 'rgba(0,0,0,0.7)';
+          loadingMessage.style.color = 'white';
+          loadingMessage.style.padding = '20px';
+          loadingMessage.style.borderRadius = '10px';
+          loadingMessage.style.zIndex = '9999';
+          document.body.appendChild(loadingMessage);
+          
+          // Convert canvas to blob for sharing
+          canvas.toBlob(function(blob) {
+            // Create a File from the blob
+            const file = new File([blob], `${playerName}_certificate.png`, { type: 'image/png' });
+            
+            navigator.share({
+              title: 'My Multiplication Quiz Certificate',
+              text: 'Check out my achievement in the Multiplication Quiz!',
+              files: [file]
+            }).catch(error => {
+              console.error('Error sharing:', error);
+              // Fallback for older browsers or if sharing files isn't supported
+              navigator.share({
+                title: 'My Multiplication Quiz Certificate',
+                text: `I completed the Multiplication Quiz! Score: ${score} out of ${totalQuestions * 10}`
+              }).catch(err => {
+                alert('Sorry, sharing is not supported on this device or browser.');
+              });
+            }).finally(() => {
+              document.body.removeChild(loadingMessage);
+            });
+          }, 'image/png');
+        }
+      } else {
+        alert('Sorry, sharing is not supported on this device or browser.');
       }
     }
     
@@ -2022,13 +2149,31 @@
       generateQuestion();
     });
     
-    // Also handle Enter key for name input
+    // Update the name input Enter key handling
+    // Replace the current event listener with this improved version
     nameInput.addEventListener('keydown', function(event) {
       if (event.key === 'Enter') {
+        // Prevent default behavior
         event.preventDefault();
+        
+        // Explicitly trigger the Start button
         startBtn.click();
+        
+        // Mobile-specific handling
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+          event.stopPropagation();
+        }
       }
     });
+    
+    // For mobile devices, add an additional event listener
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+      nameInput.addEventListener('keyup', function(event) {
+        if (event.key === 'Enter') {
+          startBtn.click();
+        }
+      });
+    }
     
     // Create personalized message variants that include the player name
     function createPersonalizedMessages() {
@@ -2105,6 +2250,7 @@
       return message.replace('{name}', playerName);
     }
     
+    // Also update the submit answer event listener to prevent keyboard issues
     submitBtn.addEventListener('click', function() {
       // Prevent multiple submissions while processing
       if (isProcessingAnswer) {
@@ -2157,16 +2303,17 @@
       if (currentQuestion > totalQuestions) {
         setTimeout(showCongratsScreen, 1500);
       } else {
-        setTimeout(generateQuestion, 1500);
-      }
-    });
-    
-    // Submit answer on pressing Enter key
-    answerInput.addEventListener('keydown', function(event) {
-      if (event.key === 'Enter') {
-        // Prevent default behavior to ensure our handler runs first
-        event.preventDefault();
-        submitBtn.click();
+        // Keep keyboard focus if possible before generating next question
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+          // On mobile, this helps keep the keyboard up in some browsers
+          answerInput.disabled = false;
+          setTimeout(() => {
+            answerInput.focus();
+            setTimeout(generateQuestion, 1400);
+          }, 100);
+        } else {
+          setTimeout(generateQuestion, 1500);
+        }
       }
     });
     
@@ -2364,6 +2511,10 @@
     // Download certificate button event listener
     downloadBtn.addEventListener('click', downloadCertificate);
     
+    // Share certificate button event listener
+    const shareBtn = document.getElementById('shareBtn');
+    shareBtn.addEventListener('click', shareCertificate);
+    
     // Add device orientation handling
     window.addEventListener('orientationchange', function() {
       // Adjust UI based on orientation
@@ -2511,6 +2662,46 @@
       }
     `;
     document.head.appendChild(styleSheet);
+    
+    // Add these event listeners after the generateQuestion function
+    
+    // Main keyboard event handler for answer input - handles both desktop and mobile
+    answerInput.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter' || event.keyCode === 13) {
+        // Prevent default to avoid any browser-specific behaviors
+        event.preventDefault();
+        
+        // Prevent processing if we're already handling an answer
+        if (isProcessingAnswer) {
+          return;
+        }
+        
+        // Trigger the submit button click
+        submitBtn.click();
+      }
+    });
+    
+    // Additional mobile-specific handling (iOS sometimes needs this)
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+      answerInput.addEventListener('keyup', function(event) {
+        if (event.key === 'Enter' || event.keyCode === 13) {
+          if (!isProcessingAnswer) {
+            submitBtn.click();
+          }
+        }
+      });
+    }
+    
+    // Form submit handler as a fallback
+    const quizForm = document.querySelector('.quiz-form');
+    if (quizForm) {
+      quizForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        if (!isProcessingAnswer) {
+          submitBtn.click();
+        }
+      });
+    }
   </script>
 </body>
 </html>
